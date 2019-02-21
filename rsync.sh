@@ -33,6 +33,7 @@ else
 			mkdir /home/MONTHLY_BACKUP
 			tar -cvjf /home/MONTHLY_BACKUP/monthly_`date +%Y.%m.%d`.tar.bz2 /home/DAYLI_BACKUP/DAYLI_`date +%Y.%m.%d`/
 		else
+			rm /home/MONTHLY_BACKUP/*
 			tar -cvjf /home/MONTHLY_BACKUP/monthly_`date +%Y.%m.%d`.tar.bz2 /home/DAYLI_BACKUP/DAYLI_`date +%Y.%m.%d`/
 		fi
 	fi
