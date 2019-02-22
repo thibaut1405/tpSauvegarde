@@ -26,6 +26,7 @@ sshpass -p "root" ssh root@192.168.33.200 "mysqldump --single-transaction -u $db
 
 sshpass -p "root" rsync --backup --backup-dir=`date +%Y.%m.%d` -a -e ssh 192.168.33.200:~/$databasebackup /home/BDD_BACKUP/DAYLI_BACKUP/$databasebackup
 
+sshpass -p "root" ssh root@192.168.33.200 "rm ~/$databasebackup"
 
 
 if [ "$numberOfDay" == "1" ];
