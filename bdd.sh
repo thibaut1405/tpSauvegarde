@@ -20,7 +20,7 @@ day=`date +%d`
 sshpass -p "root" ssh root@192.168.33.200 'sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --on'
 
 # dump the database
-sshpass -p "root" ssh root@192.168.33.200 "mysqldump --single-transaction -u $dbuser -p$dbpassword $dbname > ~/$databasebackup"
+sshpass -p "root" ssh root@192.168.33.200 "mysqldump --single-transaction --databases -u $dbuser -p$dbpassword $dbname > ~/$databasebackup"
 
 # copy datas from to backup server
 
