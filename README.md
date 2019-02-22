@@ -2,6 +2,7 @@
 
 Pour faire fonctionner mes scripts 
 
+Les machine doivent garder la configuration réseau d'origine
 
  1 - Git clone du repository
 
