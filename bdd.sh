@@ -1,27 +1,22 @@
 #!/bin/bash
-#
-## on se place dans le repertoire ou l'on veut sauvegarder les bases
-#
 if [ ! -d /home/BDD_BACKUP ];
 then
         mkdir /home/BDD_BACKUP
 fi
-cd /home/BDD_BACKUP
-# Récupère toutes les bases de données
-sshpass -p "root" ssh root@192.168.33.200 "mysqldump -u root -p'root' nextcloud > backup.sql"
-#sshpass -p "root" ssh root@192.168.33.200 databases=`mysql --user=root --password=root -e "SHOW DATABASES;" | grep -Ev "(information_schema|performance_schema|mysql|sys)"`
 
-# parcours les bases
+dbname=nextcloud
+dbuser=root
+dbpassword=root
+databasebackup=db_`date +"%Y.%m.%d"`.sql
 
-#for i in $databases; do
+# put nextcloud instance to maintenance mode
+sshpass -p "root" ssh root@192.168.33.200 'sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --on'
 
-## Sauvegarde des bases de donnees en fichiers .sql
-#mysqldump --user=root --password=root $i > ${i}_`date +"%Y-%m-%d"`.sql
-## Compression des exports en tar.bz2 (le meilleur taux de compression)
-#tar jcf ${i}_`date +"%Y-%m-%d"`.sql.tar.bz2 ${i}_`date +"%Y-%m-%d"`.sql
+# dump the database
+sshpass -p "root" ssh root@192.168.33.200 "mysqldump --single-transaction -u $dbuser -p$dbpassword $dbname > ~/$databasebackup"
 
-## Suppression des exports non compresses
-#rm ${i}_`date +"%Y-%m-%d"`.sql
+# copy datas from to backup server
+sshpass -p "root" rsync -avx root@192.168.33.200:~/$databasebackup /home/BDD_BACKUP/$databasebackup
 
-#done
-
+# put nextcloud back to normal mode
+sshpass -p "root" ssh root@192.168.33.200 'sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --off'
