@@ -10,4 +10,9 @@ Les machine doivent garder la configuration réseau d'origine
 
  3 - Une fois cela fais vous n'aurez plus qu'a run les scripts 
 
+Pour tout automatiser il faudrait créer une crontab comme celle ci : 
+
+30 17 * * * ~/tpSauvegarde/rsync.sh
+30 17 * * * ~/tpSauvegarde/bdd.sh
+
 Bon test (sans embaras je l'espère)
